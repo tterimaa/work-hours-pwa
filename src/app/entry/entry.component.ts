@@ -4,18 +4,8 @@ import {
   NgbCalendar,
   NgbTimeStruct
 } from "@ng-bootstrap/ng-bootstrap";
-
-interface Entry {
-  date: Date;
-  dayH: {
-    hours: number;
-    minutes: number;
-  };
-  eveningH: {
-    hours: number;
-    minutes: number;
-  };
-}
+import { Entry } from '../../types';
+import { EntryService } from '../entry.service';
 
 const evening: NgbTimeStruct = {
   hour: 18,
@@ -94,8 +84,9 @@ export class EntryComponent implements OnInit {
       console.log(err);
     }
     this.entry = newEntry;
+    this.entryService.saveEntry(newEntry);
   }
-  constructor(private calendar: NgbCalendar) {}
+  constructor(private calendar: NgbCalendar, private entryService: EntryService) {}
 
   ngOnInit(): void {
     this.date = this.calendar.getToday();
