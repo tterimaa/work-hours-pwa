@@ -38,7 +38,7 @@ export const calculateHours = (
     eveningHours = noHours;
     return { dayHours, eveningHours };
   }
-  dayHours = difference(from, to);
+  dayHours = difference(from, divider);
   eveningHours = difference(divider, to);
   return { dayHours, eveningHours };
 };
