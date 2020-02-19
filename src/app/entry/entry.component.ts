@@ -33,7 +33,6 @@ export class EntryComponent implements OnInit {
     hours: number;
     minutes: number;
   };
-  entry: Entry;
   entriesInDb: Entry[];
   private createEntry = (): Entry => {
     try {
@@ -73,6 +72,7 @@ export class EntryComponent implements OnInit {
       this.savedEveningHours = { hours: 0, minutes: 0 };
       return;
     }
+    console.log(entry);
     this.timeFrom = {
       ...entry.timeFrom,
       second: 0
@@ -81,6 +81,7 @@ export class EntryComponent implements OnInit {
       ...entry.timeTo,
       second: 0
     };
+    console.log(this.timeFrom);
     this.savedDayHours = entry.dayH;
     this.savedEveningHours = entry.eveningH;
   }
@@ -93,7 +94,6 @@ export class EntryComponent implements OnInit {
       console.error(err);
       return;
     }
-    this.entry = newEntry;
     this.entryService.saveEntry(newEntry);
   }
   constructor(

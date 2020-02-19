@@ -1,30 +1,50 @@
-<form class="form-inline">
+<h1 class="display-4">Log work hours</h1>
+<div class="card" style="width: 40vw">
+<form class="card-body">
   <div class="form-group">
-    <div class="input-group">
-      <input
-        class="form-control"
-        placeholder="yyyy-mm-dd"
-        name="dp"
-        [(ngModel)]="date"
-        ngbDatepicker
-        #d="ngbDatepicker"
-        (ngModelChange)="setForm()"
-      />
-      <div class="input-group-append">
-        <button
-          class="btn btn-outline-secondary calendar"
-          (click)="d.toggle()"
-          type="button"
-        ></button>
-      </div>
+    <label for="dp"><h5 class="card-title"></h5>Date: </label>
+    <input
+      class="form-control"
+      placeholder="yyyy-mm-dd"
+      name="dp"
+      id="dp"
+      [(ngModel)]="date"
+      ngbDatepicker
+      #d="ngbDatepicker"
+      (click)="d.toggle()"
+      (ngModelChange)="setForm()"
+    />
+  </div>
+  <div class="form-group">
+    <div class="d-flex justify-content-end">
+      <label for="tpF" class="d-flex align-self-center m-2"><h5 class="card-title">From:</h5></label>
+      <ngb-timepicker
+        name="tp1"
+        [(ngModel)]="timeFrom"
+        [minuteStep]="15"
+      ></ngb-timepicker>
+    </div>
+    <div class="d-flex justify-content-end">
+      <label for="tpT" class="d-flex align-self-center m-2"><h5 class="card-title">To:</h5></label>
+      <ngb-timepicker
+        name="tp2"
+        [(ngModel)]="timeTo"
+        [minuteStep]="15"
+      ></ngb-timepicker>
     </div>
   </div>
+  <button type="submit" (click)="onSubmit()" class="btn btn-primary">Submit</button>
 </form>
-<p>I worked...</p>
-<div class="d-flex">From: <ngb-timepicker [(ngModel)]="timeFrom" [minuteStep]="15"></ngb-timepicker></div>
-<div class="d-flex">To: <ngb-timepicker [(ngModel)]="timeTo" [minuteStep]="15"></ngb-timepicker></div>
-<div>Saved day hours: {{savedDayHours?.hours}}h {{savedDayHours?.minutes}}min</div>
-<div>Saved evening hours: {{savedEveningHours?.hours}}h {{savedEveningHours?.minutes}}min</div>
+</div>
+<div id="info">
+  <div>
+    Saved day hours: {{ savedDayHours?.hours }}h {{ savedDayHours?.minutes }}min
+  </div>
+  <div>
+    Saved evening hours: {{ savedEveningHours?.hours }}h
+    {{ savedEveningHours?.minutes }}min
+  </div>
+</div>
 
 <hr />
 DEBUG STUFF
@@ -35,8 +55,6 @@ DEBUG STUFF
   that matches your application's style. In this example, the icon is set via a
   CSS class.
 </ngb-alert>
-<pre>timeFrom: {{timeFrom | json}}</pre>
-<pre>timeTo: {{timeTo | json}}</pre>
+<pre>timeFrom: {{ timeFrom | json }}</pre>
+<pre>timeTo: {{ timeTo | json }}</pre>
 <button (click)="onSubmit()">SUBMIT</button>
-<pre>entry: {{entry | json}}</pre>
-
