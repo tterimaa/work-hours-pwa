@@ -6,6 +6,7 @@ import {
 } from "@ng-bootstrap/ng-bootstrap";
 import { Entry } from '../../types';
 import { EntryService } from '../entry.service';
+import { calculateHours, validateForm, generateKey } from '../helper';
 
 const evening: NgbTimeStruct = {
   hour: 18,
@@ -25,52 +26,18 @@ export class EntryComponent implements OnInit {
   timeFrom: NgbTimeStruct;
   timeTo: NgbTimeStruct;
   entry: Entry;
-  private isGreaterOrEqual = (a: NgbTimeStruct, b: NgbTimeStruct) => {
-    let bool;
-    if(a.hour - b.hour > 0) bool = true;
-    else if(a.hour - b.hour === 0 && a.minute - b.minute >= 0) bool = true;
-    else bool = false;
-    console.log(bool);
-    return bool;
-  }
-  private difference = (start: NgbTimeStruct, end: NgbTimeStruct) => {
-    let hours = end.hour - start.hour;
-    let minutes = end.minute - start.minute;
-    if(hours < 0) hours = 0;
-    if(minutes < 0) minutes = 0;
-    return { hours, minutes };
-  }
-  private calculateHours = () => {
-    // Evening
-    let eveningHours;
-    let dayHours;
-    if(this.isGreaterOrEqual(this.timeFrom, evening)) {
-      eveningHours = this.difference(this.timeFrom, this.timeTo);
-      dayHours = { hours: 0, minutes: 0}
-      return { dayHours, eveningHours }
-    }
-    if(this.isGreaterOrEqual(evening, this.timeTo)) {
-      dayHours = this.difference(this.timeFrom, this.timeTo)
-      eveningHours = { hours: 0, minutes: 0 }
-      return { dayHours, eveningHours }
-    }
-    dayHours = this.difference(this.timeFrom, evening);
-    eveningHours = this.difference(evening, this.timeTo);
-    return { dayHours, eveningHours }
-  }
   private createEntry = (): Entry => {
-    if (!this.date || !this.timeFrom || !this.timeTo)
-      throw "Date, time from and time to must have a value";
-    if (this.timeFrom.hour < timeEarliest || this.timeFrom.hour > timeLatest)
-      throw `Time from must be between ${timeEarliest} and ${timeLatest}`;
-    if (this.timeTo.hour < timeEarliest || this.timeTo.hour > timeLatest)
-      throw `Time to must be between ${timeEarliest} and ${timeLatest}`;
-    const year = this.date.year;
-    const month = this.date.month;
-    const day = this.date.day;
-    const { dayHours, eveningHours } = this.calculateHours();
+    try {
+      validateForm(this.date, this.timeFrom, this.timeTo, timeEarliest, timeLatest);
+    } catch(err) {
+      console.error(err);
+      return;
+    }
+    const key = generateKey(this.date);
+    const { dayHours, eveningHours } = calculateHours(this.timeFrom, this.timeTo, evening);
     return {
-      date: new Date(year, month, day),
+      key: key,
+      date: Object.assign({}, this.date),
       dayH: dayHours,
       eveningH: eveningHours,
     };
@@ -81,7 +48,8 @@ export class EntryComponent implements OnInit {
     try {
       newEntry = this.createEntry();
     } catch (err) {
-      console.log(err);
+      console.error(err);
+      return;
     }
     this.entry = newEntry;
     this.entryService.saveEntry(newEntry);

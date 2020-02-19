@@ -1,11 +1,16 @@
 export interface Entry {
-  date: Date,
+  key: string;
+  date: {
+      year: number,
+      month: number,
+      day: number
+  };
   dayH: {
     hours: number;
     minutes: number;
-  },
+  };
   eveningH: {
     hours: number;
     minutes: number;
-  }
+  };
 }
