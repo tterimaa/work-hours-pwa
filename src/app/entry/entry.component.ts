@@ -7,6 +7,7 @@ import {
 import { Entry } from '../../types';
 import { EntryService } from '../entry.service';
 import { calculateHours, validateForm, generateKey } from '../helper';
+import { generate } from 'rxjs';
 
 const evening: NgbTimeStruct = {
   hour: 18,
@@ -26,6 +27,7 @@ export class EntryComponent implements OnInit {
   timeFrom: NgbTimeStruct;
   timeTo: NgbTimeStruct;
   entry: Entry;
+  entriesInDb: Entry[];
   private createEntry = (): Entry => {
     try {
       validateForm(this.date, this.timeFrom, this.timeTo, timeEarliest, timeLatest);
@@ -40,8 +42,22 @@ export class EntryComponent implements OnInit {
       date: Object.assign({}, this.date),
       dayH: dayHours,
       eveningH: eveningHours,
+      timeFrom: Object.assign({}, this.timeFrom),
+      timeTo: Object.assign({}, this.timeTo)
     };
   };
+  setForm(): void {
+    const entry = this.entriesInDb.find(entry => entry.key === generateKey(this.date));
+    if(!entry) return;
+    this.timeFrom = {
+      ...entry.timeFrom,
+      second: 0
+    };
+    this.timeTo = {
+      ...entry.timeTo,
+      second: 0
+    };
+  }
   onSubmit(): void {
     console.log("click");
     let newEntry;
@@ -57,6 +73,8 @@ export class EntryComponent implements OnInit {
   constructor(private calendar: NgbCalendar, private entryService: EntryService) {}
 
   ngOnInit(): void {
+    console.log('INIT');
     this.date = this.calendar.getToday();
+    this.entryService.getEntries().subscribe(entries => this.entriesInDb = entries);
   }
 }

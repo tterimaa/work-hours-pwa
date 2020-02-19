@@ -13,4 +13,12 @@ export class Entry {
     hours: number;
     minutes: number;
   };
+  timeFrom: {
+    hour: number;
+    minute: number;
+  };
+  timeTo: {
+    hour: number;
+    minute: number;
+  };
 }

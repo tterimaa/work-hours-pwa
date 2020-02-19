@@ -8,6 +8,7 @@
         [(ngModel)]="date"
         ngbDatepicker
         #d="ngbDatepicker"
+        (click)="setForm()"
       />
       <div class="input-group-append">
         <button
@@ -34,5 +35,6 @@
 </ngb-alert>
 <pre>timeFrom: {{timeFrom | json}}</pre>
 <pre>timeTo: {{timeTo | json}}</pre>
-<button (click)="onSubmit()">nappi</button>
+<button (click)="onSubmit()">SUBMIT</button>
 <pre>entry: {{entry | json}}</pre>
+
