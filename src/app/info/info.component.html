@@ -1,4 +1,16 @@
-<div id="info" class="text-center" *ngIf="dayHours && eveningHours" ng-show="dayHours && eveningHours">
-    <h5>Saved day hours: {{dayHours.hours}}h {{dayHours.minutes}}min</h5>
-    <h5>Saved evening hours: {{eveningHours.hours}}h {{eveningHours.minutes}}min</h5>
+<div
+  id="info"
+  class="d-flex justify-content-center"
+  *ngIf="dayHours && eveningHours"
+  ng-show="dayHours && eveningHours"
+>
+  <div class="alert alert-success">
+    <h5>{{ date | ngbDatePipe }}</h5>
+    <hr />
+    <p>Saved day hours: <b>{{ dayHours.hours }}h {{ dayHours.minutes }}min</b></p>
+    <p>
+      Saved evening hours: <b>{{ eveningHours.hours }}h
+      {{ eveningHours.minutes }}min</b>
+    </p>
+  </div>
 </div>

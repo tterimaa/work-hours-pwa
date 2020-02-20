@@ -1,47 +1,57 @@
 <h1 class="display-4 text-center">Log work hours</h1>
-<div class="card ml-auto mr-auto m-4" style="width: fit-content">
-  <form class="card-body d-flex flex-column">
-    <div class="form-group">
-      <div class="d-flex">
-        <label for="dp" class="align-self-center"><h5 class="card-title">Date:</h5></label>
-        <input
-          class="form-control"
-          placeholder="yyyy-mm-dd"
-          name="dp"
-          id="dp"
-          [(ngModel)]="date"
-          ngbDatepicker
-          #d="ngbDatepicker"
-          (click)="d.toggle()"
-          (ngModelChange)="setForm()"
-        />
+<div id="entry-container">
+  <div class="card ml-auto mr-auto m-4" style="width: fit-content">
+    <form class="card-body d-flex flex-column">
+      <div class="form-group">
+        <div class="d-flex">
+          <label for="dp" class="align-self-center"
+            ><h5 class="card-title">Date:</h5></label
+          >
+          <input
+            class="form-control"
+            placeholder="yyyy-mm-dd"
+            name="dp"
+            id="dp"
+            [(ngModel)]="date"
+            ngbDatepicker
+            #d="ngbDatepicker"
+            (click)="d.toggle()"
+            (ngModelChange)="setForm()"
+          />
+        </div>
       </div>
-    </div>
-    <div class="form-group" style="width: fit-content;">
-      <div class="d-flex justify-content-end">
-        <label for="tpF" class="align-self-center"
-          ><h5 class="card-title">From:</h5></label
-        >
-        <ngb-timepicker
-          name="tp1"
-          [(ngModel)]="timeFrom"
-          [minuteStep]="15"
-        ></ngb-timepicker>
+      <div class="form-group" style="width: fit-content;">
+        <div class="d-flex justify-content-end">
+          <label for="tpF" class="align-self-center"
+            ><h5 class="card-title">From:</h5></label
+          >
+          <ngb-timepicker
+            name="tp1"
+            [(ngModel)]="timeFrom"
+            [minuteStep]="15"
+          ></ngb-timepicker>
+        </div>
+        <div class="d-flex justify-content-end">
+          <label for="tpT" class="align-self-center"
+            ><h5 class="card-title">To:</h5></label
+          >
+          <ngb-timepicker
+            name="tp2"
+            [(ngModel)]="timeTo"
+            [minuteStep]="15"
+          ></ngb-timepicker>
+        </div>
       </div>
-      <div class="d-flex justify-content-end">
-        <label for="tpT" class="align-self-center"
-          ><h5 class="card-title">To:</h5></label
-        >
-        <ngb-timepicker
-          name="tp2"
-          [(ngModel)]="timeTo"
-          [minuteStep]="15"
-        ></ngb-timepicker>
-      </div>
-    </div>
-    <button type="submit" (click)="onSubmit()" class="btn btn-primary">
-      Submit
-    </button>
-  </form>
+      <button type="submit" (click)="onSubmit()" class="btn btn-primary">
+        Submit
+      </button>
+    </form>
+  </div>
+  <app-message [message]="message"></app-message>
+  <app-info
+    class="fit-content"
+    [dayHours]="dayH"
+    [eveningHours]="eveningH"
+    [date]="date"
+  ></app-info>
 </div>
-<app-info class="fit-content" [dayHours]="dayH" [eveningHours]="eveningH"></app-info>

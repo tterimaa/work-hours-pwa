@@ -29,6 +29,10 @@ export class EntryComponent implements OnInit {
   eveningH: SavedHours;
   entry: Entry;
   entriesInDb: Entry[];
+  message: {
+    text: string;
+    type: string;
+  };
   private createEntry = (): Entry => {
     try {
       validateForm(
@@ -39,8 +43,7 @@ export class EntryComponent implements OnInit {
         timeLatest
       );
     } catch (err) {
-      console.error(err);
-      return;
+      throw err;
     }
     const key = generateKey(this.date);
     const { dayHours, eveningHours } = calculateHours(
@@ -78,6 +81,13 @@ export class EntryComponent implements OnInit {
       this.entryService.saveEntry(this.createEntry());
     } catch (err) {
       console.error(err);
+      this.message = {
+        text: err,
+        type: "error"
+      };
+      setTimeout(() => {
+        this.message = { text: "", type: "" };
+      }, 5000);
     }
   }
   constructor(

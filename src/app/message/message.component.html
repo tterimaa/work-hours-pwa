@@ -1,0 +1,12 @@
+<div *ngIf="message?.text" class="d-flex justify-content-center">
+  <div
+    class="alert"
+    [ngClass]="{
+      'alert-danger': message.type === 'error'
+    }"
+    role="alert"
+  >
+  <h5 class="alert-heading">Whoops!</h5>
+  <p>{{ message.text }}</p>
+  </div>
+</div>

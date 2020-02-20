@@ -9,9 +9,11 @@ import { AngularFirestoreModule } from "@angular/fire/firestore";
 import { environment } from "../environments/environment";
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { InfoComponent } from './info/info.component';
+import { NgbDatePipe } from './ngb-date.pipe';
+import { MessageComponent } from './message/message.component';
 
 @NgModule({
-  declarations: [AppComponent, EntryComponent, InfoComponent],
+  declarations: [AppComponent, EntryComponent, InfoComponent, NgbDatePipe, MessageComponent],
   imports: [
     BrowserModule,
     FormsModule,
