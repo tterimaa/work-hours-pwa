@@ -1,10 +1,8 @@
+import { FormFields } from '../types';
+
 export class Entry {
   key: string;
-  date: {
-    year: number,
-    month: number,
-    day: number
-  };
+  fields: FormFields;
   dayH: {
     hours: number;
     minutes: number;
@@ -12,13 +10,5 @@ export class Entry {
   eveningH: {
     hours: number;
     minutes: number;
-  };
-  timeFrom: {
-    hour: number;
-    minute: number;
-  };
-  timeTo: {
-    hour: number;
-    minute: number;
   };
 }

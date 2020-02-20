@@ -1,10 +1,8 @@
+import { NgbTimeStruct, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+
 export interface Entry {
   key: string;
-  date: {
-    year: number;
-    month: number;
-    day: number;
-  };
+  fields: FormFields;
   dayH: {
     hours: number;
     minutes: number;
@@ -13,17 +11,15 @@ export interface Entry {
     hours: number;
     minutes: number;
   };
-  timeFrom: {
-    hour: number;
-    minute: number;
-  };
-  timeTo: {
-    hour: number;
-    minute: number;
-  };
 }
 
 export interface SavedHours {
     hours: number,
     minutes: number
+}
+
+export interface FormFields {
+    date: NgbDateStruct,
+    from: NgbTimeStruct,
+    to: NgbTimeStruct
 }

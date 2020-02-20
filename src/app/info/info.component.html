@@ -4,9 +4,9 @@
   *ngIf="dayHours && eveningHours"
   ng-show="dayHours && eveningHours"
 >
-  <div class="alert alert-success">
-    <h5>{{ date | ngbDatePipe }}</h5>
-    <hr />
+  <div class="alert alert-info" style="width: 18.7rem;">
+    <h5 class="m-0">{{ date | ngbDatePipe }}</h5>
+    <hr class="mt-1"/>
     <p>Saved day hours: <b>{{ dayHours.hours }}h {{ dayHours.minutes }}min</b></p>
     <p>
       Saved evening hours: <b>{{ eveningHours.hours }}h

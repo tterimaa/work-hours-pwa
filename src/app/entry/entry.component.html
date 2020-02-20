@@ -12,7 +12,7 @@
             placeholder="yyyy-mm-dd"
             name="dp"
             id="dp"
-            [(ngModel)]="date"
+            [(ngModel)]="fields.date"
             ngbDatepicker
             #d="ngbDatepicker"
             (click)="d.toggle()"
@@ -27,7 +27,7 @@
           >
           <ngb-timepicker
             name="tp1"
-            [(ngModel)]="timeFrom"
+            [(ngModel)]="fields.from"
             [minuteStep]="15"
           ></ngb-timepicker>
         </div>
@@ -37,7 +37,7 @@
           >
           <ngb-timepicker
             name="tp2"
-            [(ngModel)]="timeTo"
+            [(ngModel)]="fields.to"
             [minuteStep]="15"
           ></ngb-timepicker>
         </div>
@@ -52,6 +52,6 @@
     class="fit-content"
     [dayHours]="dayH"
     [eveningHours]="eveningH"
-    [date]="date"
+    [date]="fields?.date"
   ></app-info>
 </div>

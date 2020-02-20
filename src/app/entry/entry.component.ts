@@ -1,20 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import {
-  NgbDateStruct,
-  NgbCalendar,
-  NgbTimeStruct
-} from "@ng-bootstrap/ng-bootstrap";
-import { Entry, SavedHours } from "../../types";
+import { NgbCalendar } from "@ng-bootstrap/ng-bootstrap";
+import { Entry, SavedHours, FormFields } from "../../types";
 import { EntryService } from "../entry.service";
 import { calculateHours, validateForm, generateKey } from "../helper";
+import { settings } from "./../settings";
 
-const evening: NgbTimeStruct = {
-  hour: 18,
-  minute: 0,
-  second: 0
-};
-const timeLatest = 23;
-const timeEarliest = 6;
+const { evening, latest, earliest } = settings;
 
 @Component({
   selector: "app-entry",
@@ -22,63 +13,66 @@ const timeEarliest = 6;
   styleUrls: ["./entry.component.scss"]
 })
 export class EntryComponent implements OnInit {
-  date: NgbDateStruct;
-  timeFrom: NgbTimeStruct;
-  timeTo: NgbTimeStruct;
+  fields: FormFields;
   dayH: SavedHours;
   eveningH: SavedHours;
   entry: Entry;
-  entriesInDb: Entry[];
   message: {
     text: string;
     type: string;
   };
+
   private createEntry = (): Entry => {
     try {
       validateForm(
-        this.date,
-        this.timeFrom,
-        this.timeTo,
-        timeEarliest,
-        timeLatest
+        this.fields.date,
+        this.fields.from,
+        this.fields.to,
+        earliest,
+        latest
       );
     } catch (err) {
       throw err;
     }
-    const key = generateKey(this.date);
+    const key = generateKey(this.fields.date);
     const { dayHours, eveningHours } = calculateHours(
-      this.timeFrom,
-      this.timeTo,
+      this.fields.from,
+      this.fields.to,
       evening
     );
     return {
       key: key,
-      date: Object.assign({}, this.date),
+      fields: {
+        date: Object.assign({}, this.fields.date),
+        from: this.fields.from,
+        to: this.fields.to
+      },
       dayH: dayHours,
-      eveningH: eveningHours,
-      timeFrom: Object.assign({}, this.timeFrom),
-      timeTo: Object.assign({}, this.timeTo)
+      eveningH: eveningHours
     };
   };
+
   setForm(): void {
-    console.log("set form");
-    this.entryService.getById(generateKey(this.date)).then(doc => {
+    this.entryService.getById(generateKey(this.fields.date)).then(doc => {
       if (doc.exists) {
-        this.timeFrom = doc.data().timeFrom;
-        this.timeTo = doc.data().timeTo;
+        this.fields.from = doc.data().fields.from;
+        this.fields.to = doc.data().fields.to;
         this.dayH = doc.data().dayH;
         this.eveningH = doc.data().eveningH;
       } else {
-        this.timeFrom = null;
-        this.timeTo = null;
+        this.fields.from = null;
+        this.fields.to = null;
         this.dayH = null;
         this.eveningH = null;
       }
     });
   }
+
   onSubmit(): void {
     try {
-      this.entryService.saveEntry(this.createEntry());
+      this.entryService
+        .saveEntry(this.createEntry())
+        .then(() => this.setForm());
     } catch (err) {
       console.error(err);
       this.message = {
@@ -96,8 +90,11 @@ export class EntryComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log("INIT");
-    this.date = this.calendar.getToday();
+    this.fields = {
+      date: this.calendar.getToday(),
+      from: { hour: 0, minute: 0, second: 0 },
+      to: { hour: 0, minute: 0, second: 0 }
+    };
     this.setForm();
   }
 }
