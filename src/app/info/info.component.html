@@ -1,4 +1,4 @@
-<div id="info">
+<div id="info" class="text-center" *ngIf="dayHours && eveningHours" ng-show="dayHours && eveningHours">
     <h5>Saved day hours: {{dayHours.hours}}h {{dayHours.minutes}}min</h5>
     <h5>Saved evening hours: {{eveningHours.hours}}h {{eveningHours.minutes}}min</h5>
-</div>>
+</div>

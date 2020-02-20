@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Entry } from './entry.model';
 import { Observable } from 'rxjs';
 
@@ -19,14 +19,8 @@ export class EntryService {
     return this.entries;
   }
 
-  getById(id: string): void {
-    this.firestore.collection('entries').doc(id).ref.get().then(doc => {
-      if (doc.exists) {
-        console.log(doc.data());
-      } else {
-        console.log('no document');
-      }
-    })
+  getById(id: string) {
+    return this.firestore.collection('entries').doc(id).ref.get();
   }
 
   constructor(private firestore: AngularFirestore) {

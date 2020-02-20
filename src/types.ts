@@ -22,3 +22,8 @@ export interface Entry {
     minute: number;
   };
 }
+
+export interface SavedHours {
+    hours: number,
+    minutes: number
+}

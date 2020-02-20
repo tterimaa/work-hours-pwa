@@ -4,7 +4,7 @@ import {
   NgbCalendar,
   NgbTimeStruct
 } from "@ng-bootstrap/ng-bootstrap";
-import { Entry } from "../../types";
+import { Entry, SavedHours } from "../../types";
 import { EntryService } from "../entry.service";
 import { calculateHours, validateForm, generateKey } from "../helper";
 
@@ -25,14 +25,9 @@ export class EntryComponent implements OnInit {
   date: NgbDateStruct;
   timeFrom: NgbTimeStruct;
   timeTo: NgbTimeStruct;
-  savedDayHours: {
-    hours: number;
-    minutes: number;
-  };
-  savedEveningHours: {
-    hours: number;
-    minutes: number;
-  };
+  dayH: SavedHours;
+  eveningH: SavedHours;
+  entry: Entry;
   entriesInDb: Entry[];
   private createEntry = (): Entry => {
     try {
@@ -64,40 +59,26 @@ export class EntryComponent implements OnInit {
   };
   setForm(): void {
     console.log("set form");
-    const entry = this.entriesInDb.find(
-      entry => entry.key === generateKey(this.date)
-    );
-    if (!entry) {
-      this.savedDayHours = { hours: 0, minutes: 0 };
-      this.savedEveningHours = { hours: 0, minutes: 0 };
-      return;
-    }
-    console.log(entry);
-    this.timeFrom = {
-      ...entry.timeFrom,
-      second: 0
-    };
-    this.timeTo = {
-      ...entry.timeTo,
-      second: 0
-    };
-    console.log(this.timeFrom);
-    this.savedDayHours = entry.dayH;
-    this.savedEveningHours = entry.eveningH;
-  }
-  test(): void {
-    this.entryService.getById(generateKey(this.date));
+    this.entryService.getById(generateKey(this.date)).then(doc => {
+      if (doc.exists) {
+        this.timeFrom = doc.data().timeFrom;
+        this.timeTo = doc.data().timeTo;
+        this.dayH = doc.data().dayH;
+        this.eveningH = doc.data().eveningH;
+      } else {
+        this.timeFrom = null;
+        this.timeTo = null;
+        this.dayH = null;
+        this.eveningH = null;
+      }
+    });
   }
   onSubmit(): void {
-    console.log("click");
-    let newEntry;
     try {
-      newEntry = this.createEntry();
+      this.entryService.saveEntry(this.createEntry());
     } catch (err) {
       console.error(err);
-      return;
     }
-    this.entryService.saveEntry(newEntry);
   }
   constructor(
     private calendar: NgbCalendar,
@@ -106,14 +87,7 @@ export class EntryComponent implements OnInit {
 
   ngOnInit(): void {
     console.log("INIT");
-    this.savedDayHours = { hours: 0, minutes: 0 };
-    this.savedEveningHours = { hours: 0, minutes: 0 };
     this.date = this.calendar.getToday();
-    this.entryService
-      .getEntries()
-      .subscribe(entries => {
-        this.entriesInDb = entries
-        this.setForm();
-      });
+    this.setForm();
   }
 }
