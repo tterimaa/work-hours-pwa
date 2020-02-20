@@ -20,7 +20,7 @@ import { MessageComponent } from './message/message.component';
     NgbModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' })
   ],
   providers: [],
   bootstrap: [AppComponent]
