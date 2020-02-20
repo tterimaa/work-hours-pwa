@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "work-hours-pwa": {
+      "hosting": {
+        "work-hours-pwa": [
+          "work-hours-pwa"
+        ]
+      }
+    }
+  }
+}

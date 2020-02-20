@@ -1,0 +1,19 @@
+{
+  "hosting": [
+    {
+      "target": "work-hours-pwa",
+      "public": "dist/work-hours-pwa",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.html"
+        }
+      ]
+    }
+  ]
+}
