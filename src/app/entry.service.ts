@@ -19,6 +19,16 @@ export class EntryService {
     return this.entries;
   }
 
+  getById(id: string): void {
+    this.firestore.collection('entries').doc(id).ref.get().then(doc => {
+      if (doc.exists) {
+        console.log(doc.data());
+      } else {
+        console.log('no document');
+      }
+    })
+  }
+
   constructor(private firestore: AngularFirestore) {
     this.entriesCollection = firestore.collection<Entry>('entries');
     this.entries = this.entriesCollection.valueChanges();

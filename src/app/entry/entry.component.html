@@ -36,6 +36,7 @@
   <button type="submit" (click)="onSubmit()" class="btn btn-primary">Submit</button>
 </form>
 </div>
+<app-info [dayHours]="savedDayHours" [eveningHours]="savedEveningHours"></app-info>
 <div id="info">
   <div>
     Saved day hours: {{ savedDayHours?.hours }}h {{ savedDayHours?.minutes }}min
@@ -57,4 +58,4 @@ DEBUG STUFF
 </ngb-alert>
 <pre>timeFrom: {{ timeFrom | json }}</pre>
 <pre>timeTo: {{ timeTo | json }}</pre>
-<button (click)="onSubmit()">SUBMIT</button>
+<button (click)="test()">SUBMIT</button>

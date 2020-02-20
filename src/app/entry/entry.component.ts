@@ -85,6 +85,9 @@ export class EntryComponent implements OnInit {
     this.savedDayHours = entry.dayH;
     this.savedEveningHours = entry.eveningH;
   }
+  test(): void {
+    this.entryService.getById(generateKey(this.date));
+  }
   onSubmit(): void {
     console.log("click");
     let newEntry;
